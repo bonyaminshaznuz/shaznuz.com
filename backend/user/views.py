@@ -30,22 +30,32 @@ def api_homepage(request):
         footer = Footer.objects.first()
         social_icons = SocialIcon.objects.all()
         
-        # Serialize hero data
-        hero_data = None
+        # Serialize hero data - always return a dict, even if hero doesn't exist
         if hero:
             hero_data = {
-                'title': hero.title,
-                'availability': hero.get_availability_display(),
-                'full_name': hero.full_name,
-                'short_intro': hero.short_intro,
-                'company_name': hero.company_name,
+                'title': hero.title or '',
+                'availability': hero.get_availability_display() or 'Available Now',
+                'full_name': hero.full_name or '',
+                'short_intro': hero.short_intro or '',
+                'company_name': hero.company_name or '',
                 'hireme_link': hero.hireme_link or '',
                 'download_cv_button': hero.download_cv_button or '',
-                'long_biography': hero.long_biography,
+                'long_biography': hero.long_biography or '',
+            }
+        else:
+            # Return empty structure if no hero data exists
+            hero_data = {
+                'title': '',
+                'availability': 'Available Now',
+                'full_name': '',
+                'short_intro': '',
+                'company_name': '',
+                'hireme_link': '',
+                'download_cv_button': '',
+                'long_biography': '',
             }
         
-        # Serialize website data
-        website_data = None
+        # Serialize website data - always return a dict, even if website doesn't exist
         if website:
             try:
                 favicon_url = website.favicon.url if website.favicon else None
@@ -58,9 +68,16 @@ def api_homepage(request):
                 profile_picture_url = None
             
             website_data = {
-                'name': website.name,
+                'name': website.name or '',
                 'favicon': favicon_url,
                 'profile_picture': profile_picture_url,
+            }
+        else:
+            # Return empty structure if no website data exists
+            website_data = {
+                'name': '',
+                'favicon': None,
+                'profile_picture': None,
             }
         
         # Serialize educations

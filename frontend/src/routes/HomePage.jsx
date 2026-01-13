@@ -16,8 +16,14 @@ function HomePage() {
         const response = await axios.get(`${API_BASE_URL}/api/homepage/`, {
           params: { _t: timestamp }
         });
+        
+        // Debug: Log the response data
+        console.log('API Response:', response.data);
+        console.log('Hero Data:', response.data?.hero);
+        
         setData(response.data);
         setLoading(false);
+        setError(null);
         
         // Update page title and favicon
         if (response.data.website) {
@@ -139,28 +145,53 @@ function HomePage() {
     );
   }
 
-  const { hero, website, educations, skill_categories, projects } = data;
+  // Destructure data with safe defaults
+  const hero = data?.hero || {};
+  const website = data?.website || {};
+  const educations = data?.educations || [];
+  const skill_categories = data?.skill_categories || [];
+  const projects = data?.projects || [];
+
+  // Helper function to get value or fallback (handles empty strings, null, undefined)
+  const getValue = (value, fallback) => {
+    if (value === null || value === undefined) {
+      return fallback;
+    }
+    if (typeof value === 'string') {
+      return value.trim() !== '' ? value : fallback;
+    }
+    return value || fallback;
+  };
+
+  // Debug: Log hero data when it changes
+  useEffect(() => {
+    console.log('Hero data:', hero);
+    console.log('Website data:', website);
+    console.log('Full data object:', data);
+  }, [data, hero, website]);
 
   return (
     <main>
-      <div id="home">
+      <div id="home" key={hero?.full_name || 'hero-section'}>
         <div className="hero-top">
           <div className="hero-top-left">
             <div className="dev-hero"></div>
-            <h3>{hero?.title || 'Web Developer'}</h3>
+            <h3>{getValue(hero?.title, 'Web Developer')}</h3>
           </div>
           <div className="hero-top-right">
             <div className="active-hero"></div>
-            <p>{hero?.availability || 'Available Now'}</p>
+            <p>{getValue(hero?.availability, 'Available Now')}</p>
           </div>
         </div>
         <div className="hero-main">
           <div className="hero-main-left">
-            <h1> I'm {hero?.full_name || 'Kazi Bony Amin (Shaznuz)'}</h1>
+            <h1> I'm {getValue(hero?.full_name, 'Kazi Bony Amin (Shaznuz)')}</h1>
             <p>
-              {hero?.short_intro || 'Web Developer from Dhaka, Bangladesh.'} 
-              {hero?.company_name && <span className="highlight"> {hero.company_name}</span>}
-              {hero?.short_intro && !hero.short_intro.includes('.') && '.'}
+              {getValue(hero?.short_intro, 'Web Developer from Dhaka, Bangladesh.')} 
+              {hero?.company_name && hero.company_name.trim() !== '' && (
+                <span className="highlight"> {hero.company_name}</span>
+              )}
+              {hero?.short_intro && hero.short_intro.trim() !== '' && !hero.short_intro.includes('.') && '.'}
             </p>
             <div className="button-hero">
               <a href={hero?.hireme_link || "#"} className="btn">Hire Me</a>
@@ -182,7 +213,7 @@ function HomePage() {
           </div>
         </div>
         <div className="hero-bottom">
-          <p>{hero?.long_biography || 'No biography available.'}</p>
+          <p>{getValue(hero?.long_biography, 'No biography available.')}</p>
         </div>
       </div>
 
