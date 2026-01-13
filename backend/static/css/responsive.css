@@ -1,0 +1,234 @@
+@media (max-width: 768px) {
+    header {
+        width: 100%;
+    }
+
+    nav {
+        flex-wrap: wrap;
+        width: 90%;
+
+    }
+
+    .hide-on-mobile {
+        display: none;
+    }
+
+    .navbar-right a img {
+        height: 30px;
+        margin-right: 0;
+        filter: invert(1);
+        transition: filter 0.3s ease-in-out;
+    }
+}
+
+@media (max-width: 768px) {
+    .hero-main {
+        flex-direction: column-reverse;
+        /* Image on top */
+        text-align: center;
+        padding: 20px;
+        align-items: center;
+    }
+
+    .hero-main-left {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 15px;
+    }
+
+    .hero-main-left h2 {
+        font-size: 22px;
+        margin-bottom: 10px;
+    }
+
+    .hero-main-left p {
+        font-size: 15px;
+        max-width: 90%;
+        line-height: 1.5;
+    }
+
+    .button-hero {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 15px;
+    }
+
+    .button-hero .btn {
+        width: auto;
+        padding: 10px;
+        text-align: center;
+        font-size: 13px;
+        border-radius: 6px;
+        transition: 0.3s ease-in-out;
+    }
+
+    .button-hero .btn:hover {
+        transform: scale(1.05);
+    }
+
+    .hero-main-right {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    .hero-main-right img {
+        width: 160px;
+        height: 160px;
+        border-radius: 50%;
+        object-fit: cover;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: 0.3s ease-in-out;
+    }
+
+    .hero-main-right img:hover {
+        transform: scale(1.08);
+    }
+}
+
+@media (max-width: 768px) {
+    #about .education-main {
+        padding: 0;
+        background: none;
+        gap: 10px;
+    }
+
+    #about {
+        width: 100%;
+        padding: 15px 0px;
+        background: none;
+    }
+
+    .footer-contact a {
+        padding: 12px 20px;
+    }
+
+    .footer-middle-right a {
+        width: 30px;
+        height: 30px;
+    }
+
+    .hero-top-right p {
+        display: none;
+    }
+
+    .footer-middle-left p {
+        font-size: 12px;
+    }
+
+    .hero-top-right {
+        padding: 10px;
+        border-radius: 50%;
+        background-color: #DFF7EC;
+        display: flex;
+        align-items: center;
+    }
+
+    .active-hero {
+        width: 5px;
+        height: 5px;
+        background-color: #059855;
+        border-radius: 50%;
+        margin: 0 auto;
+    }
+}
+
+@media (max-width: 768px) {
+    .education-top-right a span {
+        display: none;
+    }
+
+    .education-top {
+        padding: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        border-radius: 5px;
+    }
+}
+
+@media (max-width: 768px) {
+    .education-box {
+        width: 100%;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .education-main-top-left {
+        display: flex;
+        align-items: center;
+        margin-left: 0px;
+        margin-top: 10px;
+        margin-bottom: 12px;
+        gap: 0;
+    }
+
+    #myskill {
+        background-color: #DFF7EC;
+    }
+
+}
+
+@media (max-width: 768px) {
+    footer {
+        flex-wrap: wrap;
+        width: 90%;
+
+    }
+
+    .footer-middle-right a img {
+        height: 30px;
+    }
+}
+
+@media (max-width: 768px) {
+    .skill-set {
+        width: 100%;
+    }
+
+    .skill-set img {
+        margin-left: 10px;
+        margin-top: 10px;
+    }
+
+    .bottom-line {
+        margin-top: 5px;
+    }
+
+}
+
+@media (max-width: 768px) {
+    .project-main {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+}
+
+@media (max-width: 768px) {
+    .contact-main {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        padding: 10px;
+    }
+
+    .container {
+        width: 100% !important;
+        padding: 20px !important;
+    }
+
+    .back-btn {
+        margin-bottom: 20px;
+    }
+}
+
+
+
+
+@media (max-width: 480px) {
+    .project-main {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+}

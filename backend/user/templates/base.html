@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Portfolio Management{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1e40af',
+                        secondary: '#3b82f6',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-50 min-h-screen">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-lg border-b border-gray-200 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col lg:flex-row lg:justify-between lg:items-center py-3 lg:py-0 lg:h-16">
+                <!-- Logo and Mobile Menu Button Row -->
+                <div class="flex justify-between items-center">
+                    <div class="flex-shrink-0">
+                        <a href="{% url 'dashboard' %}" class="text-xl lg:text-2xl font-bold bg-gradient-to-r from-indigo-600 to-blue-600 bg-clip-text text-transparent">
+                            Portfolio Admin
+                        </a>
+                    </div>
+                    <!-- Mobile menu button -->
+                    <button type="button" id="mobile-menu-button" class="lg:hidden inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500" aria-expanded="false">
+                        <span class="sr-only">Open main menu</span>
+                        <!-- Hamburger icon -->
+                        <svg id="menu-icon" class="block h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                        <!-- Close icon (hidden by default) -->
+                        <svg id="close-icon" class="hidden h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+                
+                <!-- Desktop Navigation Menu -->
+                <div class="hidden lg:flex lg:items-center lg:flex-1 lg:justify-between lg:ml-8">
+                    <div class="flex flex-wrap items-center gap-1 lg:gap-0.5">
+                        <a href="{% url 'dashboard' %}" class="px-3 py-2 rounded-lg text-xs lg:text-sm font-medium transition-all duration-200 whitespace-nowrap {% if request.resolver_match.url_name == 'dashboard' %}bg-indigo-100 text-indigo-700{% else %}text-gray-600 hover:bg-gray-100 hover:text-gray-900{% endif %}">
+                            Dashboard
+                        </a>
+                        <a href="{% url 'hero_list' %}" class="px-3 py-2 rounded-lg text-xs lg:text-sm font-medium transition-all duration-200 whitespace-nowrap {% if 'hero' in request.resolver_match.url_name %}bg-indigo-100 text-indigo-700{% else %}text-gray-600 hover:bg-gray-100 hover:text-gray-900{% endif %}">
+                            Hero
+                        </a>
+                        <a href="{% url 'education_list' %}" class="px-3 py-2 rounded-lg text-xs lg:text-sm font-medium transition-all duration-200 whitespace-nowrap {% if 'education' in request.resolver_match.url_name %}bg-indigo-100 text-indigo-700{% else %}text-gray-600 hover:bg-gray-100 hover:text-gray-900{% endif %}">
+                            Education
+                        </a>
+                        <a href="{% url 'project_list' %}" class="px-3 py-2 rounded-lg text-xs lg:text-sm font-medium transition-all duration-200 whitespace-nowrap {% if 'project' in request.resolver_match.url_name %}bg-indigo-100 text-indigo-700{% else %}text-gray-600 hover:bg-gray-100 hover:text-gray-900{% endif %}">
+                            Projects
+                        </a>
+                        <a href="{% url 'skill_category_list' %}" class="px-3 py-2 rounded-lg text-xs lg:text-sm font-medium transition-all duration-200 whitespace-nowrap {% if 'skill' in request.resolver_match.url_name %}bg-indigo-100 text-indigo-700{% else %}text-gray-600 hover:bg-gray-100 hover:text-gray-900{% endif %}">
+                            Skills
+                        </a>
+                        <a href="{% url 'footer_list' %}" class="px-3 py-2 rounded-lg text-xs lg:text-sm font-medium transition-all duration-200 whitespace-nowrap {% if 'footer' in request.resolver_match.url_name %}bg-indigo-100 text-indigo-700{% else %}text-gray-600 hover:bg-gray-100 hover:text-gray-900{% endif %}">
+                            Footer
+                        </a>
+                        <a href="{% url 'social_icon_list' %}" class="px-3 py-2 rounded-lg text-xs lg:text-sm font-medium transition-all duration-200 whitespace-nowrap {% if 'social' in request.resolver_match.url_name %}bg-indigo-100 text-indigo-700{% else %}text-gray-600 hover:bg-gray-100 hover:text-gray-900{% endif %}">
+                            Social
+                        </a>
+                        <a href="{% url 'mailjet_settings' %}" class="px-3 py-2 rounded-lg text-xs lg:text-sm font-medium transition-all duration-200 whitespace-nowrap {% if 'mailjet' in request.resolver_match.url_name %}bg-indigo-100 text-indigo-700{% else %}text-gray-600 hover:bg-gray-100 hover:text-gray-900{% endif %}">
+                            Email
+                        </a>
+                        <a href="{% url 'website_settings' %}" class="px-3 py-2 rounded-lg text-xs lg:text-sm font-medium transition-all duration-200 whitespace-nowrap {% if 'website' in request.resolver_match.url_name %}bg-indigo-100 text-indigo-700{% else %}text-gray-600 hover:bg-gray-100 hover:text-gray-900{% endif %}">
+                            Website
+                        </a>
+                    </div>
+                    
+                    <!-- Right side: Welcome, Messages and Admin Panel -->
+                    <div class="flex items-center space-x-2 lg:space-x-3 ml-4">
+                        <span class="text-xs lg:text-sm text-gray-600 hidden xl:block">Welcome, {{ user.username }}</span>
+                        <a href="{% url 'contact_submission_list' %}" class="px-3 lg:px-4 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors text-xs lg:text-sm font-medium whitespace-nowrap">
+                            Messages
+                        </a>
+                        <a href="/admin/" class="px-3 lg:px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors text-xs lg:text-sm font-medium whitespace-nowrap">
+                            Admin Panel
+                        </a>
+                    </div>
+                </div>
+            </div>
+        
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden lg:hidden border-t border-gray-200">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <a href="{% url 'dashboard' %}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100">Dashboard</a>
+                <a href="{% url 'hero_list' %}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100">Hero</a>
+                <a href="{% url 'education_list' %}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100">Education</a>
+                <a href="{% url 'project_list' %}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100">Projects</a>
+                <a href="{% url 'skill_category_list' %}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100">Skills</a>
+                <a href="{% url 'footer_list' %}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100">Footer</a>
+                <a href="{% url 'social_icon_list' %}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100">Social</a>
+                <a href="{% url 'mailjet_settings' %}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100">Email</a>
+                <a href="{% url 'website_settings' %}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100">Website</a>
+                
+                <!-- Action Buttons -->
+                <div class="pt-2 border-t border-gray-200 space-y-2">
+                    <a href="{% url 'contact_submission_list' %}" class="block px-3 py-2 rounded-md text-base font-medium bg-black text-white hover:bg-gray-800 text-center">Messages</a>
+                    <a href="/admin/" class="block px-3 py-2 rounded-md text-base font-medium bg-indigo-600 text-white hover:bg-indigo-700 text-center">Admin Panel</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="mb-6 p-4 rounded-lg shadow-md {% if message.tags == 'error' %}bg-red-50 border-l-4 border-red-500 text-red-800{% elif message.tags == 'success' %}bg-green-50 border-l-4 border-green-500 text-green-800{% else %}bg-blue-50 border-l-4 border-blue-500 text-blue-800{% endif %} animate-fade-in">
+                    <div class="flex items-center">
+                        <span class="font-semibold">{{ message }}</span>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <style>
+        @keyframes fade-in {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+            animation: fade-in 0.3s ease-out;
+        }
+        
+        /* Enhanced Input Styling */
+        input[type="text"],
+        input[type="email"],
+        input[type="url"],
+        input[type="number"],
+        input[type="date"],
+        input[type="password"],
+        select,
+        textarea {
+            transition: all 0.2s ease-in-out;
+        }
+        
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="url"]:focus,
+        input[type="number"]:focus,
+        input[type="date"]:focus,
+        input[type="password"]:focus,
+        select:focus,
+        textarea:focus {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        input[type="text"]:hover,
+        input[type="email"]:hover,
+        input[type="url"]:hover,
+        input[type="number"]:hover,
+        input[type="date"]:hover,
+        input[type="password"]:hover,
+        select:hover,
+        textarea:hover {
+            border-color: #cbd5e1;
+        }
+        
+        /* File Input Styling */
+        input[type="file"] {
+            padding: 0.75rem 1rem;
+        }
+        
+        input[type="file"]::-webkit-file-upload-button {
+            transition: all 0.2s ease-in-out;
+        }
+        
+        input[type="file"]::-webkit-file-upload-button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Select Dropdown Styling */
+        select {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E");
+            background-position: right 0.5rem center;
+            background-repeat: no-repeat;
+            background-size: 1.5em 1.5em;
+            padding-right: 2.5rem;
+            appearance: none;
+        }
+        
+        /* Date Input Styling */
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            cursor: pointer;
+            opacity: 0.6;
+            transition: opacity 0.2s;
+        }
+        
+        input[type="date"]::-webkit-calendar-picker-indicator:hover {
+            opacity: 1;
+        }
+        
+        /* Placeholder Styling */
+        ::placeholder {
+            color: #9ca3af;
+            opacity: 1;
+        }
+        
+        /* Disabled Input Styling */
+        input:disabled,
+        select:disabled,
+        textarea:disabled {
+            background-color: #f3f4f6;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+        
+        /* Mobile Menu Animation */
+        #mobile-menu {
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+                        opacity 0.3s ease-in-out,
+                        padding 0.3s ease-in-out;
+            padding-top: 0;
+            padding-bottom: 0;
+        }
+        
+        #mobile-menu.menu-open {
+            max-height: 600px;
+            opacity: 1;
+            padding-top: 0.5rem;
+            padding-bottom: 0.75rem;
+        }
+        
+        #mobile-menu .space-y-1 > * {
+            opacity: 0;
+            transform: translateX(-20px);
+            transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+        }
+        
+        #mobile-menu.menu-open .space-y-1 > * {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        /* Staggered animation for menu items */
+        #mobile-menu.menu-open .space-y-1 > *:nth-child(1) { transition-delay: 0.05s; }
+        #mobile-menu.menu-open .space-y-1 > *:nth-child(2) { transition-delay: 0.1s; }
+        #mobile-menu.menu-open .space-y-1 > *:nth-child(3) { transition-delay: 0.15s; }
+        #mobile-menu.menu-open .space-y-1 > *:nth-child(4) { transition-delay: 0.2s; }
+        #mobile-menu.menu-open .space-y-1 > *:nth-child(5) { transition-delay: 0.25s; }
+        #mobile-menu.menu-open .space-y-1 > *:nth-child(6) { transition-delay: 0.3s; }
+        #mobile-menu.menu-open .space-y-1 > *:nth-child(7) { transition-delay: 0.35s; }
+        #mobile-menu.menu-open .space-y-1 > *:nth-child(8) { transition-delay: 0.4s; }
+        #mobile-menu.menu-open .space-y-1 > *:nth-child(9) { transition-delay: 0.45s; }
+        #mobile-menu.menu-open .space-y-1 > *:nth-child(10) { transition-delay: 0.5s; }
+        
+        /* Icon Animation */
+        #menu-icon, #close-icon {
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), 
+                        opacity 0.2s ease-in-out;
+        }
+        
+        #mobile-menu-button:hover #menu-icon,
+        #mobile-menu-button:hover #close-icon {
+            transform: scale(1.1);
+        }
+        
+        #menu-icon.hidden {
+            display: none;
+        }
+        
+        #close-icon.hidden {
+            display: none;
+        }
+    </style>
+    
+    <script>
+        // Mobile menu toggle with smooth animations
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const menuIcon = document.getElementById('menu-icon');
+            const closeIcon = document.getElementById('close-icon');
+            
+            if (mobileMenuButton && mobileMenu) {
+                mobileMenuButton.addEventListener('click', function() {
+                    const isOpen = mobileMenu.classList.contains('menu-open');
+                    
+                    if (isOpen) {
+                        // Close menu with animation
+                        mobileMenu.classList.remove('menu-open');
+                        setTimeout(() => {
+                            mobileMenu.classList.add('hidden');
+                        }, 300); // Wait for animation to complete
+                        
+                        // Icon transition
+                        menuIcon.classList.remove('hidden');
+                        closeIcon.classList.add('hidden');
+                        mobileMenuButton.setAttribute('aria-expanded', 'false');
+                    } else {
+                        // Show menu with animation
+                        mobileMenu.classList.remove('hidden');
+                        // Force reflow to ensure hidden class is removed before adding menu-open
+                        void mobileMenu.offsetWidth;
+                        mobileMenu.classList.add('menu-open');
+                        
+                        // Icon transition
+                        menuIcon.classList.add('hidden');
+                        closeIcon.classList.remove('hidden');
+                        mobileMenuButton.setAttribute('aria-expanded', 'true');
+                    }
+                });
+                
+                // Close menu when clicking on a link
+                const mobileMenuLinks = mobileMenu.querySelectorAll('a');
+                mobileMenuLinks.forEach(link => {
+                    link.addEventListener('click', function() {
+                        // Close menu with animation
+                        mobileMenu.classList.remove('menu-open');
+                        setTimeout(() => {
+                            mobileMenu.classList.add('hidden');
+                        }, 300);
+                        
+                        // Icon transition
+                        menuIcon.classList.remove('hidden');
+                        closeIcon.classList.add('hidden');
+                        mobileMenuButton.setAttribute('aria-expanded', 'false');
+                    });
+                });
+                
+                // Close menu when clicking outside
+                document.addEventListener('click', function(event) {
+                    const isClickInsideMenu = mobileMenu.contains(event.target);
+                    const isClickOnButton = mobileMenuButton.contains(event.target);
+                    
+                    if (!isClickInsideMenu && !isClickOnButton && mobileMenu.classList.contains('menu-open')) {
+                        mobileMenu.classList.remove('menu-open');
+                        setTimeout(() => {
+                            mobileMenu.classList.add('hidden');
+                        }, 300);
+                        
+                        menuIcon.classList.remove('hidden');
+                        closeIcon.classList.add('hidden');
+                        mobileMenuButton.setAttribute('aria-expanded', 'false');
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

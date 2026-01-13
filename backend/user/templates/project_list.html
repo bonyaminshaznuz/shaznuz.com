@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}Projects - Portfolio Management{% endblock %}
+
+{% block content %}
+<div class="px-4 py-6 sm:px-0">
+    <div class="flex justify-between items-center mb-6">
+        <h2 class="text-3xl font-bold text-gray-900">Projects</h2>
+        <a href="{% url 'project_create' %}" class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700">Add New</a>
+    </div>
+    
+    <div class="bg-white shadow overflow-hidden sm:rounded-md">
+        <ul class="divide-y divide-gray-200">
+            {% for project in projects %}
+            <li>
+                <div class="px-4 py-4 sm:px-6 flex justify-between items-center">
+                    <div class="flex items-center space-x-4">
+                        {% if project.logo %}
+                        <img src="{{ project.logo.url }}" alt="{{ project.name }}" class="h-16 w-16 object-cover rounded-lg border border-gray-300">
+                        {% else %}
+                        <div class="h-16 w-16 bg-gray-200 rounded-lg flex items-center justify-center">
+                            <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                            </svg>
+                        </div>
+                        {% endif %}
+                        <div>
+                            <p class="text-sm font-medium text-indigo-600 truncate">{{ project.name }}</p>
+                            <p class="mt-2 text-sm text-gray-500">{{ project.project_type }} - {{ project.get_status_display }}</p>
+                        </div>
+                    </div>
+                    <div class="flex space-x-2">
+                        <a href="{% url 'project_update' project.pk %}" class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600">Edit</a>
+                        <a href="{% url 'project_delete' project.pk %}" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">Delete</a>
+                    </div>
+                </div>
+            </li>
+            {% empty %}
+            <li class="px-4 py-4 text-center text-gray-500">No projects found. <a href="{% url 'project_create' %}" class="text-indigo-600">Create one</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endblock %}

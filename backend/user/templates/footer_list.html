@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}Footer - Portfolio Management{% endblock %}
+
+{% block content %}
+<div class="px-4 py-6 sm:px-0">
+    <div class="flex justify-between items-center mb-6">
+        <h2 class="text-3xl font-bold text-gray-900">Footer</h2>
+        <a href="{% url 'footer_create' %}" class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700">Add New</a>
+    </div>
+    
+    <div class="bg-white shadow overflow-hidden sm:rounded-md">
+        <ul class="divide-y divide-gray-200">
+            {% for footer in footers %}
+            <li>
+                <div class="px-4 py-4 sm:px-6 flex justify-between items-center">
+                    <div>
+                        <p class="text-sm font-medium text-indigo-600 truncate">{{ footer.title }}</p>
+                        <p class="mt-2 text-sm text-gray-500">{{ footer.copyright_text }}</p>
+                    </div>
+                    <div class="flex space-x-2">
+                        <a href="{% url 'footer_update' footer.pk %}" class="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600">Edit</a>
+                        <a href="{% url 'footer_delete' footer.pk %}" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">Delete</a>
+                    </div>
+                </div>
+            </li>
+            {% empty %}
+            <li class="px-4 py-4 text-center text-gray-500">No footer found. <a href="{% url 'footer_create' %}" class="text-indigo-600">Create one</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endblock %}

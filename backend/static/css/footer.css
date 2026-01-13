@@ -1,0 +1,115 @@
+footer {
+    max-width: 1240px;
+    width: 90%;
+    margin: 20px auto 10px;
+    border-radius: 10px;
+    padding: 20px;
+    background-color: rgb(0, 0, 0);
+}
+.footer-top{
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    gap: 20px;
+}
+.footer-top h1{
+    color: rgb(255, 255, 255); 
+    text-align: center;
+}
+.footer-top p{
+    color: #fff;
+    text-align: center;
+    word-spacing: 1px;
+    letter-spacing: 2px;
+}
+
+.footer-contact {
+    display: flex;
+    gap: 15px; 
+    justify-content: center;
+    margin-top: 20px;
+  }
+  
+  .footer-contact a {
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: bold;
+    color: #6D6D6D;
+    background:azure; /* Gradient color */
+    padding: 12px 24px;
+    border-radius: 8px; /* Rounded corners */
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .footer-contact a:hover {
+    color: black;
+    background: aliceblue;
+    transform: translateY(-3px); /* Lift effect */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+  }
+  
+.footer-middle-right{
+    flex-wrap: wrap;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.footer-middle-right a{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 45px;
+    height: 45px;
+    margin: 5px;
+    border-radius: 50%;
+    transition: background-color 0.3s ease-in-out, transform 0.2s ease-in-out;
+    border: 1PX solid black;
+}
+.footer-middle-right a:hover{
+    background-color: aliceblue;
+    transform: scale(1.1);
+}
+.footer-middle-right img{
+    padding: 7px;
+} 
+.footer-middle{
+    display: flex;
+    justify-content: space-between;
+    background-color: azure;
+    padding: 10px;
+    border-radius: 10px;
+    align-items: center;
+    margin-top: 20PX;
+}
+.footer-middle-left{
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.footer-dot{
+    width: 12px;
+    height: 12px;
+    background-color: #CCCCCC;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+.footer-middle-left p{
+    color: #6D6D6D;
+    font-weight: 600;
+    font-size: 20px;
+}
+.footer-bottom {
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+    margin-top: 20px;
+}
+
+.footer-bottom p {
+    margin: 0; 
+    color: white;
+}

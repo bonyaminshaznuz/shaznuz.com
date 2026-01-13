@@ -1,0 +1,82 @@
+/* Container */
+.contact-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 50px 20px;
+  background-color: #f5f5f5;
+  min-height: 100vh;
+}
+
+/* Form */
+.contact-form {
+  background-color: #fff;
+  padding: 30px 40px;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 500px;
+}
+
+/* Heading */
+.contact-form h2 {
+  text-align: center;
+  margin-bottom: 25px;
+  color: #333;
+}
+
+/* Labels */
+.contact-form label {
+  display: block;
+  margin-bottom: 15px;
+  font-weight: 500;
+  color: #555;
+}
+
+/* Inputs & Textarea */
+.contact-form input,
+.contact-form textarea {
+  width: 100%;
+  padding: 12px 15px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 7px;
+  font-size: 16px;
+  resize: vertical;
+  transition: all 0.3s ease;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+  border-color: #007BFF;
+  outline: none;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+}
+
+/* Buttons (Back & Submit) */
+.contact-form button {
+  font-weight: 700;
+  background-color: rgb(0, 0, 0);
+  border-radius: 5px;
+  color: #ffffff;
+  padding: 8px 15px;
+  cursor: pointer;
+  border: none;
+  transition: background-color 0.3s ease-in-out, transform 0.2s ease-in-out, color 0.3s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+/* Hover effect */
+.contact-form button:hover {
+  color: #000;
+  background-color: aliceblue;
+  transform: scale(1.05);
+}
+
+/* Back button specific margin */
+.back-button {
+  margin-bottom: 20px;
+}
