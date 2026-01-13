@@ -27,10 +27,13 @@ class EducationAndTrainingForm(forms.ModelForm):
         model = EducationAndTraining
         fields = '__all__'
         widgets = {
-            'training_type': forms.Select(attrs={'class': 'w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 outline-none text-gray-700 bg-white cursor-pointer'}),
+            'training_type': forms.TextInput(attrs={'class': 'w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 outline-none text-gray-700 placeholder-gray-400', 'id': 'id_training_type', 'placeholder': 'e.g., BSc in CSE, HSC Science'}),
             'institution_name': forms.TextInput(attrs={'class': 'w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 outline-none text-gray-700 placeholder-gray-400'}),
             'subject': forms.TextInput(attrs={'class': 'w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 outline-none text-gray-700 placeholder-gray-400'}),
-            'cgpa': forms.NumberInput(attrs={'class': 'w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 outline-none text-gray-700 placeholder-gray-400', 'step': '0.01'}),
+            'status': forms.TextInput(attrs={'class': 'w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 outline-none text-gray-700 placeholder-gray-400', 'id': 'id_status', 'placeholder': 'e.g., Running, Completed, CGPA, VPD, GPA'}),
+            'cgpa': forms.NumberInput(attrs={'class': 'w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 outline-none text-gray-700 placeholder-gray-400', 'step': '0.01', 'id': 'id_cgpa'}),
+            'vpd': forms.NumberInput(attrs={'class': 'w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 outline-none text-gray-700 placeholder-gray-400', 'step': '0.01', 'id': 'id_vpd'}),
+            'gpa': forms.NumberInput(attrs={'class': 'w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 outline-none text-gray-700 placeholder-gray-400', 'step': '0.01', 'id': 'id_gpa'}),
             'year': forms.NumberInput(attrs={'class': 'w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200 outline-none text-gray-700 placeholder-gray-400'}),
         }
 
@@ -45,9 +48,8 @@ class SkillCategoryForm(forms.ModelForm):
 class MySkillForm(forms.ModelForm):
     class Meta:
         model = MySkill
-        fields = '__all__'
+        fields = ['name', 'icon']  # Exclude category - it's set in the view
         widgets = {
-            'category': forms.Select(attrs={'class': 'w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all duration-200 outline-none text-gray-700 bg-white cursor-pointer'}),
             'name': forms.TextInput(attrs={'class': 'w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all duration-200 outline-none text-gray-700 placeholder-gray-400'}),
             'icon': forms.FileInput(attrs={'class': 'w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-green-500 focus:ring-2 focus:ring-green-200 transition-all duration-200 outline-none text-sm text-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100 file:cursor-pointer cursor-pointer'}),
         }

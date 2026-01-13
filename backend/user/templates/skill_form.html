@@ -15,6 +15,42 @@
             <h2 class="text-3xl font-bold text-gray-900">{{ title }} - {{ category.name }}</h2>
         </div>
         
+        <!-- Display messages -->
+        {% if messages %}
+        <div class="mb-6">
+            {% for message in messages %}
+            <div class="p-4 rounded-lg mb-3 {% if message.tags == 'error' %}bg-red-100 border-2 border-red-400 text-red-800{% elif message.tags == 'success' %}bg-green-100 border-2 border-green-400 text-green-800{% else %}bg-blue-100 border-2 border-blue-400 text-blue-800{% endif %}">
+                <div class="flex items-center">
+                    {% if message.tags == 'error' %}
+                    <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+                    </svg>
+                    {% elif message.tags == 'success' %}
+                    <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                    </svg>
+                    {% endif %}
+                    <span>{{ message }}</span>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        
+        <!-- Display form errors -->
+        {% if form.errors %}
+        <div class="mb-6 p-4 bg-red-100 border-2 border-red-400 rounded-lg">
+            <h4 class="font-semibold text-red-800 mb-2">Please correct the following errors:</h4>
+            <ul class="list-disc list-inside text-red-700">
+                {% for field, errors in form.errors.items %}
+                {% for error in errors %}
+                <li><strong>{{ field }}:</strong> {{ error }}</li>
+                {% endfor %}
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+        
         <form method="post" enctype="multipart/form-data" class="bg-white shadow-xl rounded-2xl overflow-hidden border border-gray-200">
             <div class="bg-gradient-to-r from-green-600 to-emerald-600 px-8 py-4">
                 <h3 class="text-xl font-semibold text-white">Skill Information</h3>

@@ -208,6 +208,15 @@ function HomePage() {
   console.log('🎨 Rendering - Hero full_name:', hero?.full_name);
   console.log('🎨 Rendering - Hero availability:', hero?.availability);
   console.log('🎨 Rendering - Educations:', educations);
+  educations.forEach((edu, index) => {
+    console.log(`🎨 Education ${index}:`, {
+      training_type: edu.training_type,
+      status: edu.status,
+      cgpa: edu.cgpa,
+      vpd: edu.vpd,
+      institution_name: edu.institution_name
+    });
+  });
   console.log('🎨 Rendering - Projects:', projects);
 
   return (
@@ -279,7 +288,27 @@ function HomePage() {
                   <p className="insti">{edu.institution_name}</p>
                   <p className="subject"><strong>Subject: </strong>{edu.subject}</p>
                   <p className="gpa">
-                    <strong>{edu.cgpa ? 'CGPA:' : 'Status:'}</strong> {edu.cgpa || 'Completed'}
+                    {edu.vpd ? (
+                      <>
+                        <strong>VPD:</strong> {edu.vpd}
+                      </>
+                    ) : edu.cgpa ? (
+                      <>
+                        <strong>CGPA:</strong> {edu.cgpa}
+                      </>
+                    ) : edu.gpa ? (
+                      <>
+                        <strong>GPA:</strong> {edu.gpa}
+                      </>
+                    ) : edu.status ? (
+                      <>
+                        <strong>Status:</strong> {edu.status}
+                      </>
+                    ) : (
+                      <>
+                        <strong>Status:</strong> Completed
+                      </>
+                    )}
                   </p>
                   <p className="pass-year"><strong>Year:</strong> {edu.year}</p>
                 </div>

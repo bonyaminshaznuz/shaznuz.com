@@ -110,10 +110,13 @@ def api_homepage(request):
         educations_data = []
         for edu in educations:
             educations_data.append({
-                'training_type': edu.get_training_type_display(),
+                'training_type': edu.training_type,
                 'institution_name': edu.institution_name,
                 'subject': edu.subject,
+                'status': edu.status if hasattr(edu, 'status') else None,
                 'cgpa': str(edu.cgpa) if edu.cgpa else None,
+                'vpd': str(edu.vpd) if hasattr(edu, 'vpd') and edu.vpd else None,
+                'gpa': str(edu.gpa) if hasattr(edu, 'gpa') and edu.gpa else None,
                 'year': edu.year,
             })
         
@@ -817,7 +820,7 @@ def education_create(request):
             messages.success(request, 'Education record created successfully!')
             return redirect('education_list')
     else:
-        form = EducationAndTrainingForm()
+        form = EducationAndTrainingForm(initial={'status': 'completed'})  # Default status
     return render(request, 'education_form.html', {'form': form, 'title': 'Create Education'})
 
 @login_required(login_url='/admin/login/')
@@ -946,12 +949,39 @@ def skill_create(request, category_id):
     category = get_object_or_404(SkillCategory, pk=category_id)
     if request.method == 'POST':
         form = MySkillForm(request.POST, request.FILES)
+        
+        # Debug: Log form data
+        print(f"Skill Create - POST data: {request.POST}")
+        print(f"Skill Create - FILES data: {request.FILES}")
+        print(f"Skill Create - Form valid: {form.is_valid()}")
+        print(f"Skill Create - Category ID: {category_id}, Category: {category}")
+        
+        if not form.is_valid():
+            print(f"Skill Create - Form errors: {form.errors}")
+            for field, errors in form.errors.items():
+                print(f"  {field}: {errors}")
+        
         if form.is_valid():
-            skill = form.save(commit=False)
-            skill.category = category
-            skill.save()
-            messages.success(request, 'Skill created successfully!')
-            return redirect('skill_list', category_id=category_id)
+            try:
+                skill = form.save(commit=False)
+                skill.category = category
+                skill.save()
+                print(f"Skill Create - Success! Skill ID: {skill.id}, Name: {skill.name}, Category: {skill.category.name}")
+                messages.success(request, 'Skill created successfully!')
+                return redirect('skill_list', category_id=category_id)
+            except Exception as e:
+                print(f"Skill Create - Save error: {str(e)}")
+                import traceback
+                print(traceback.format_exc())
+                messages.error(request, f'Error saving skill: {str(e)}')
+        else:
+            # Show form errors to user
+            error_messages = []
+            for field, errors in form.errors.items():
+                for error in errors:
+                    error_messages.append(f"{field}: {error}")
+            if error_messages:
+                messages.error(request, 'Please correct the errors: ' + ' | '.join(error_messages))
     else:
         form = MySkillForm()
     return render(request, 'skill_form.html', {'form': form, 'title': 'Create Skill', 'category': category})

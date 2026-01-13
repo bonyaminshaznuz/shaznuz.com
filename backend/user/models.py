@@ -33,19 +33,13 @@ class HeroInfo(models.Model):
 
 
 class EducationAndTraining(models.Model):
-    TRAINING_TYPES = [
-        ('trining', 'Trining'),
-        ('diploma', 'Diploma'),
-        ('certificate', 'Certificate'),
-        ('ssc', 'Ssc'),
-        ('hsc', 'Hsc'),
-        ('bsc', 'Bsc'),
-    ]
-    
-    training_type = models.CharField(max_length=50, choices=TRAINING_TYPES)
+    training_type = models.CharField(max_length=50)
     institution_name = models.CharField(max_length=255)
     subject = models.CharField(max_length=255)
-    cgpa = models.DecimalField(max_digits=4, decimal_places=2, null=True, blank=True)
+    status = models.CharField(max_length=50, default='Completed', help_text='Enter status: Running, Completed, CGPA, VPD, or GPA')
+    cgpa = models.DecimalField(max_digits=4, decimal_places=2, null=True, blank=True, help_text='Enter CGPA if status is CGPA')
+    vpd = models.DecimalField(max_digits=4, decimal_places=2, null=True, blank=True, help_text='Enter VPD if status is VPD')
+    gpa = models.DecimalField(max_digits=4, decimal_places=2, null=True, blank=True, help_text='Enter GPA if status is GPA')
     year = models.PositiveIntegerField()
     
     def __str__(self):
@@ -60,7 +54,7 @@ class SkillCategory(models.Model):
 class MySkill(models.Model):
     category = models.ForeignKey(SkillCategory, on_delete=models.CASCADE, related_name='skills')
     name = models.CharField(max_length=255)
-    icon = models.FileField(upload_to='static/icon/', help_text='Upload an SVG file')
+    icon = models.FileField(upload_to='static/icon/', null=True, blank=True, help_text='Upload an SVG file')
 
     def __str__(self):
         return self.name

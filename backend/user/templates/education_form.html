@@ -109,6 +109,27 @@
                     <label class="block text-sm font-semibold text-gray-700 mb-2">
                         <span class="flex items-center">
                             <svg class="w-4 h-4 mr-1 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            Status
+                        </span>
+                    </label>
+                    {{ form.status }}
+                    {% if form.status.errors %}
+                        <p class="text-red-500 text-xs mt-1 flex items-center">
+                            <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                            </svg>
+                            {{ form.status.errors.0 }}
+                        </p>
+                    {% endif %}
+                    <p class="text-xs text-gray-500 mt-1">Enter status: Running, Completed, CGPA, VPD, or GPA</p>
+                </div>
+                
+                <div id="cgpa-field" style="display: none;">
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                        <span class="flex items-center">
+                            <svg class="w-4 h-4 mr-1 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
                             </svg>
                             CGPA
@@ -123,7 +144,49 @@
                             {{ form.cgpa.errors.0 }}
                         </p>
                     {% endif %}
-                    <p class="text-xs text-gray-500 mt-1">Leave empty if not applicable</p>
+                    <p class="text-xs text-gray-500 mt-1">Enter your CGPA (e.g., 3.50)</p>
+                </div>
+                
+                <div id="vpd-field" style="display: none;">
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                        <span class="flex items-center">
+                            <svg class="w-4 h-4 mr-1 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                            </svg>
+                            VPD
+                        </span>
+                    </label>
+                    {{ form.vpd }}
+                    {% if form.vpd.errors %}
+                        <p class="text-red-500 text-xs mt-1 flex items-center">
+                            <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                            </svg>
+                            {{ form.vpd.errors.0 }}
+                        </p>
+                    {% endif %}
+                    <p class="text-xs text-gray-500 mt-1">Enter your VPD (e.g., 3.50)</p>
+                </div>
+
+                <div id="gpa-field" style="display: none;">
+                    <label class="block text-sm font-semibold text-gray-700 mb-2">
+                        <span class="flex items-center">
+                            <svg class="w-4 h-4 mr-1 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                            </svg>
+                            GPA
+                        </span>
+                    </label>
+                    {{ form.gpa }}
+                    {% if form.gpa.errors %}
+                        <p class="text-red-500 text-xs mt-1 flex items-center">
+                            <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                            </svg>
+                            {{ form.gpa.errors.0 }}
+                        </p>
+                    {% endif %}
+                    <p class="text-xs text-gray-500 mt-1">Enter your GPA (e.g., 3.50)</p>
                 </div>
                 
                 <div class="flex items-center justify-between pt-6 border-t border-gray-200">
@@ -144,4 +207,199 @@
         </form>
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const trainingTypeField = document.getElementById('id_training_type');
+    const statusField = document.getElementById('id_status');
+    const cgpaField = document.getElementById('cgpa-field');
+    const cgpaInput = document.getElementById('id_cgpa');
+    
+    // Default status mapping based on training type
+    const defaultStatusMap = {
+        'ssc': 'Completed',
+        'hsc': 'Completed',
+        'bsc': 'Running',
+        'trining': 'Completed',
+        'diploma': 'Completed',
+        'certificate': 'Completed'
+    };
+    
+    const vpdField = document.getElementById('vpd-field');
+    const vpdInput = document.getElementById('id_vpd');
+    const gpaField = document.getElementById('gpa-field');
+    const gpaInput = document.getElementById('id_gpa');
+    
+    function toggleFields() {
+        // Check if status contains "CGPA", "VPD", or "GPA" (case insensitive)
+        const statusValue = statusField.value.toLowerCase();
+        const hasCgpa = statusValue.includes('cgpa');
+        const hasVpd = statusValue.includes('vpd');
+        const hasGpa = statusValue.includes('gpa') && !statusValue.includes('cgpa'); // GPA but not CGPA
+        
+        // Toggle CGPA field
+        if (hasCgpa) {
+            cgpaField.style.display = 'block';
+            if (cgpaInput) {
+                cgpaInput.required = true;
+            }
+        } else {
+            cgpaField.style.display = 'none';
+            if (cgpaInput) {
+                cgpaInput.required = false;
+                cgpaInput.value = '';
+            }
+        }
+        
+        // Toggle VPD field
+        if (hasVpd) {
+            vpdField.style.display = 'block';
+            if (vpdInput) {
+                vpdInput.required = true;
+            }
+        } else {
+            vpdField.style.display = 'none';
+            if (vpdInput) {
+                vpdInput.required = false;
+                vpdInput.value = '';
+            }
+        }
+        
+        // Toggle GPA field
+        if (hasGpa) {
+            gpaField.style.display = 'block';
+            if (gpaInput) {
+                gpaInput.required = true;
+            }
+        } else {
+            gpaField.style.display = 'none';
+            if (gpaInput) {
+                gpaInput.required = false;
+                gpaInput.value = '';
+            }
+        }
+    }
+    
+    function updateStatusFromVpd() {
+        // If status contains "VPD" and VPD value is entered, update status
+        const statusValue = statusField.value.toLowerCase();
+        if (statusValue.includes('vpd') && vpdInput && vpdInput.value) {
+            // Update status to "VPD {value}" format
+            statusField.value = `VPD ${vpdInput.value}`;
+        }
+    }
+    
+    function updateStatusFromCgpa() {
+        // If status contains "CGPA" and CGPA value is entered, update status
+        const statusValue = statusField.value.toLowerCase();
+        if (statusValue.includes('cgpa') && cgpaInput && cgpaInput.value) {
+            // Update status to "CGPA {value}" format
+            statusField.value = `CGPA ${cgpaInput.value}`;
+        }
+    }
+    
+    function setDefaultStatus() {
+        const trainingType = trainingTypeField.value;
+        const defaultStatus = defaultStatusMap[trainingType];
+        
+        // Only set default if status field is empty or if it's a new form
+        if (defaultStatus && (!statusField.value || statusField.value.trim() === '')) {
+            statusField.value = defaultStatus;
+            toggleFields();
+        }
+    }
+    
+    // Set default status when training type changes (only if status is empty)
+    trainingTypeField.addEventListener('change', function() {
+        const trainingType = this.value;
+        const defaultStatus = defaultStatusMap[trainingType];
+        
+        // Only set default if status field is empty
+        if (defaultStatus && (!statusField.value || statusField.value.trim() === '')) {
+            statusField.value = defaultStatus;
+            toggleFields();
+        }
+    });
+    
+    // Listen for status input changes (for text input)
+    statusField.addEventListener('input', toggleFields);
+    statusField.addEventListener('change', toggleFields);
+    
+    // Listen for VPD value changes - update status automatically
+    if (vpdInput) {
+        vpdInput.addEventListener('input', function() {
+            const statusValue = statusField.value.toLowerCase();
+            if (statusValue.includes('vpd')) {
+                if (this.value) {
+                    statusField.value = `VPD ${this.value}`;
+                } else {
+                    statusField.value = 'VPD';
+                }
+            }
+        });
+        vpdInput.addEventListener('change', function() {
+            const statusValue = statusField.value.toLowerCase();
+            if (statusValue.includes('vpd')) {
+                if (this.value) {
+                    statusField.value = `VPD ${this.value}`;
+                } else {
+                    statusField.value = 'VPD';
+                }
+            }
+        });
+    }
+    
+    // Listen for CGPA value changes - update status automatically
+    if (cgpaInput) {
+        cgpaInput.addEventListener('input', function() {
+            const statusValue = statusField.value.toLowerCase();
+            if (statusValue.includes('cgpa')) {
+                if (this.value) {
+                    statusField.value = `CGPA ${this.value}`;
+                } else {
+                    statusField.value = 'CGPA';
+                }
+            }
+        });
+        cgpaInput.addEventListener('change', function() {
+            const statusValue = statusField.value.toLowerCase();
+            if (statusValue.includes('cgpa')) {
+                if (this.value) {
+                    statusField.value = `CGPA ${this.value}`;
+                } else {
+                    statusField.value = 'CGPA';
+                }
+            }
+        });
+    }
+    
+    // Listen for GPA value changes - update status automatically
+    if (gpaInput) {
+        gpaInput.addEventListener('input', function() {
+            const statusValue = statusField.value.toLowerCase();
+            if (statusValue.includes('gpa') && !statusValue.includes('cgpa')) {
+                if (this.value) {
+                    statusField.value = `GPA ${this.value}`;
+                } else {
+                    statusField.value = 'GPA';
+                }
+            }
+        });
+        gpaInput.addEventListener('change', function() {
+            const statusValue = statusField.value.toLowerCase();
+            if (statusValue.includes('gpa') && !statusValue.includes('cgpa')) {
+                if (this.value) {
+                    statusField.value = `GPA ${this.value}`;
+                } else {
+                    statusField.value = 'GPA';
+                }
+            }
+        });
+    }
+    
+    // Initial setup
+    setDefaultStatus();
+    toggleFields();
+});
+</script>
 {% endblock %}
