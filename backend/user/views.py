@@ -567,7 +567,7 @@ def api_contact_submit(request):
                 messages.append({
                     'From': {
                         'Email': mailjet_settings.sender_email,
-                        'Name': mailjet_settings.sender_name
+                        'Name': f'{name} via {mailjet_settings.sender_name}'
                     },
                     'To': [{
                         'Email': mailjet_settings.admin_email,
