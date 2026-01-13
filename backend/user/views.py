@@ -564,7 +564,7 @@ This is an automated confirmation email. Please do not reply to this message.
         return JsonResponse({'error': str(e)}, status=500)
 
 # Dashboard
-@login_required
+@login_required(login_url='/admin/login/')
 @user_passes_test(admin_required, login_url='/admin/login/')
 def dashboard(request):
     # Get counts for statistics
@@ -586,13 +586,13 @@ def dashboard(request):
     return render(request, 'dashboard.html', context)
 
 # HeroInfo CRUD
-@login_required
+@login_required(login_url='/admin/login/')
 @user_passes_test(admin_required, login_url='/admin/login/')
 def hero_list(request):
     heroes = HeroInfo.objects.all()
     return render(request, 'hero_list.html', {'heroes': heroes})
 
-@login_required
+@login_required(login_url='/admin/login/')
 @user_passes_test(admin_required, login_url='/admin/login/')
 def hero_create(request):
     website, _ = Website.objects.get_or_create(pk=1)
@@ -609,7 +609,7 @@ def hero_create(request):
         website_form = WebsiteForm(instance=website)
     return render(request, 'hero_form.html', {'form': form, 'website_form': website_form, 'title': 'Create Hero Info', 'website': website})
 
-@login_required
+@login_required(login_url='/admin/login/')
 @user_passes_test(admin_required, login_url='/admin/login/')
 def hero_update(request, pk):
     hero = get_object_or_404(HeroInfo, pk=pk)
@@ -627,7 +627,7 @@ def hero_update(request, pk):
         website_form = WebsiteForm(instance=website)
     return render(request, 'hero_form.html', {'form': form, 'website_form': website_form, 'title': 'Update Hero Info', 'hero': hero, 'website': website})
 
-@login_required
+@login_required(login_url='/admin/login/')
 @user_passes_test(admin_required, login_url='/admin/login/')
 def hero_delete(request, pk):
     hero = get_object_or_404(HeroInfo, pk=pk)
@@ -638,13 +638,13 @@ def hero_delete(request, pk):
     return render(request, 'hero_confirm_delete.html', {'hero': hero})
 
 # EducationAndTraining CRUD
-@login_required
+@login_required(login_url='/admin/login/')
 @user_passes_test(admin_required, login_url='/admin/login/')
 def education_list(request):
     educations = EducationAndTraining.objects.all().order_by('-year')
     return render(request, 'education_list.html', {'educations': educations})
 
-@login_required
+@login_required(login_url='/admin/login/')
 @user_passes_test(admin_required, login_url='/admin/login/')
 def education_create(request):
     if request.method == 'POST':
@@ -657,7 +657,7 @@ def education_create(request):
         form = EducationAndTrainingForm()
     return render(request, 'education_form.html', {'form': form, 'title': 'Create Education'})
 
-@login_required
+@login_required(login_url='/admin/login/')
 @user_passes_test(admin_required, login_url='/admin/login/')
 def education_update(request, pk):
     education = get_object_or_404(EducationAndTraining, pk=pk)
@@ -671,7 +671,7 @@ def education_update(request, pk):
         form = EducationAndTrainingForm(instance=education)
     return render(request, 'education_form.html', {'form': form, 'title': 'Update Education', 'education': education})
 
-@login_required
+@login_required(login_url='/admin/login/')
 @user_passes_test(admin_required, login_url='/admin/login/')
 def education_delete(request, pk):
     education = get_object_or_404(EducationAndTraining, pk=pk)
@@ -682,13 +682,13 @@ def education_delete(request, pk):
     return render(request, 'education_confirm_delete.html', {'education': education})
 
 # MyProject CRUD
-@login_required
+@login_required(login_url='/admin/login/')
 @user_passes_test(admin_required, login_url='/admin/login/')
 def project_list(request):
     projects = MyProject.objects.all().order_by('-start_date')
     return render(request, 'project_list.html', {'projects': projects})
 
-@login_required
+@login_required(login_url='/admin/login/')
 @user_passes_test(admin_required, login_url='/admin/login/')
 def project_create(request):
     if request.method == 'POST':
@@ -701,7 +701,7 @@ def project_create(request):
         form = MyProjectForm()
     return render(request, 'project_form.html', {'form': form, 'title': 'Create Project'})
 
-@login_required
+@login_required(login_url='/admin/login/')
 @user_passes_test(admin_required, login_url='/admin/login/')
 def project_update(request, pk):
     project = get_object_or_404(MyProject, pk=pk)
@@ -715,7 +715,7 @@ def project_update(request, pk):
         form = MyProjectForm(instance=project)
     return render(request, 'project_form.html', {'form': form, 'title': 'Update Project', 'project': project})
 
-@login_required
+@login_required(login_url='/admin/login/')
 @user_passes_test(admin_required, login_url='/admin/login/')
 def project_delete(request, pk):
     project = get_object_or_404(MyProject, pk=pk)
@@ -726,13 +726,13 @@ def project_delete(request, pk):
     return render(request, 'project_confirm_delete.html', {'project': project})
 
 # SkillCategory CRUD
-@login_required
+@login_required(login_url='/admin/login/')
 @user_passes_test(admin_required, login_url='/admin/login/')
 def skill_category_list(request):
     categories = SkillCategory.objects.all()
     return render(request, 'skill_category_list.html', {'categories': categories})
 
-@login_required
+@login_required(login_url='/admin/login/')
 @user_passes_test(admin_required, login_url='/admin/login/')
 def skill_category_create(request):
     if request.method == 'POST':
@@ -745,7 +745,7 @@ def skill_category_create(request):
         form = SkillCategoryForm()
     return render(request, 'skill_category_form.html', {'form': form, 'title': 'Create Skill Category'})
 
-@login_required
+@login_required(login_url='/admin/login/')
 @user_passes_test(admin_required, login_url='/admin/login/')
 def skill_category_update(request, pk):
     category = get_object_or_404(SkillCategory, pk=pk)
@@ -759,7 +759,7 @@ def skill_category_update(request, pk):
         form = SkillCategoryForm(instance=category)
     return render(request, 'skill_category_form.html', {'form': form, 'title': 'Update Skill Category', 'category': category})
 
-@login_required
+@login_required(login_url='/admin/login/')
 @user_passes_test(admin_required, login_url='/admin/login/')
 def skill_category_delete(request, pk):
     category = get_object_or_404(SkillCategory, pk=pk)
@@ -770,14 +770,14 @@ def skill_category_delete(request, pk):
     return render(request, 'skill_category_confirm_delete.html', {'category': category})
 
 # MySkill CRUD
-@login_required
+@login_required(login_url='/admin/login/')
 @user_passes_test(admin_required, login_url='/admin/login/')
 def skill_list(request, category_id):
     category = get_object_or_404(SkillCategory, pk=category_id)
     skills = MySkill.objects.filter(category=category)
     return render(request, 'skill_list.html', {'skills': skills, 'category': category})
 
-@login_required
+@login_required(login_url='/admin/login/')
 @user_passes_test(admin_required, login_url='/admin/login/')
 def skill_create(request, category_id):
     category = get_object_or_404(SkillCategory, pk=category_id)
@@ -793,7 +793,7 @@ def skill_create(request, category_id):
         form = MySkillForm()
     return render(request, 'skill_form.html', {'form': form, 'title': 'Create Skill', 'category': category})
 
-@login_required
+@login_required(login_url='/admin/login/')
 @user_passes_test(admin_required, login_url='/admin/login/')
 def skill_update(request, category_id, pk):
     category = get_object_or_404(SkillCategory, pk=category_id)
@@ -808,7 +808,7 @@ def skill_update(request, category_id, pk):
         form = MySkillForm(instance=skill)
     return render(request, 'skill_form.html', {'form': form, 'title': 'Update Skill', 'category': category, 'skill': skill})
 
-@login_required
+@login_required(login_url='/admin/login/')
 @user_passes_test(admin_required, login_url='/admin/login/')
 def skill_delete(request, category_id, pk):
     category = get_object_or_404(SkillCategory, pk=category_id)
@@ -820,13 +820,13 @@ def skill_delete(request, category_id, pk):
     return render(request, 'skill_confirm_delete.html', {'skill': skill, 'category': category})
 
 # Footer CRUD
-@login_required
+@login_required(login_url='/admin/login/')
 @user_passes_test(admin_required, login_url='/admin/login/')
 def footer_list(request):
     footers = Footer.objects.all()
     return render(request, 'footer_list.html', {'footers': footers})
 
-@login_required
+@login_required(login_url='/admin/login/')
 @user_passes_test(admin_required, login_url='/admin/login/')
 def footer_create(request):
     if request.method == 'POST':
@@ -839,7 +839,7 @@ def footer_create(request):
         form = FooterForm()
     return render(request, 'footer_form.html', {'form': form, 'title': 'Create Footer'})
 
-@login_required
+@login_required(login_url='/admin/login/')
 @user_passes_test(admin_required, login_url='/admin/login/')
 def footer_update(request, pk):
     footer = get_object_or_404(Footer, pk=pk)
@@ -853,7 +853,7 @@ def footer_update(request, pk):
         form = FooterForm(instance=footer)
     return render(request, 'footer_form.html', {'form': form, 'title': 'Update Footer', 'footer': footer})
 
-@login_required
+@login_required(login_url='/admin/login/')
 @user_passes_test(admin_required, login_url='/admin/login/')
 def footer_delete(request, pk):
     footer = get_object_or_404(Footer, pk=pk)
@@ -864,13 +864,13 @@ def footer_delete(request, pk):
     return render(request, 'footer_confirm_delete.html', {'footer': footer})
 
 # SocialIcon CRUD
-@login_required
+@login_required(login_url='/admin/login/')
 @user_passes_test(admin_required, login_url='/admin/login/')
 def social_icon_list(request):
     icons = SocialIcon.objects.all()
     return render(request, 'social_icon_list.html', {'icons': icons})
 
-@login_required
+@login_required(login_url='/admin/login/')
 @user_passes_test(admin_required, login_url='/admin/login/')
 def social_icon_create(request):
     if request.method == 'POST':
@@ -883,7 +883,7 @@ def social_icon_create(request):
         form = SocialIconForm()
     return render(request, 'social_icon_form.html', {'form': form, 'title': 'Create Social Icon'})
 
-@login_required
+@login_required(login_url='/admin/login/')
 @user_passes_test(admin_required, login_url='/admin/login/')
 def social_icon_update(request, pk):
     icon = get_object_or_404(SocialIcon, pk=pk)
@@ -897,7 +897,7 @@ def social_icon_update(request, pk):
         form = SocialIconForm(instance=icon)
     return render(request, 'social_icon_form.html', {'form': form, 'title': 'Update Social Icon', 'icon': icon})
 
-@login_required
+@login_required(login_url='/admin/login/')
 @user_passes_test(admin_required, login_url='/admin/login/')
 def social_icon_delete(request, pk):
     icon = get_object_or_404(SocialIcon, pk=pk)
@@ -908,7 +908,7 @@ def social_icon_delete(request, pk):
     return render(request, 'social_icon_confirm_delete.html', {'icon': icon})
 
 # Contact Submissions CRUD
-@login_required
+@login_required(login_url='/admin/login/')
 @user_passes_test(admin_required, login_url='/admin/login/')
 def contact_submission_list(request):
     filter_type = request.GET.get('filter', 'all')
@@ -940,7 +940,7 @@ def contact_submission_list(request):
     }
     return render(request, 'contact_submission_list.html', context)
 
-@login_required
+@login_required(login_url='/admin/login/')
 @user_passes_test(admin_required, login_url='/admin/login/')
 def contact_submission_detail(request, pk):
     submission = get_object_or_404(ContactSubmission, pk=pk)
@@ -949,7 +949,7 @@ def contact_submission_detail(request, pk):
         submission.save()
     return render(request, 'contact_submission_detail.html', {'submission': submission})
 
-@login_required
+@login_required(login_url='/admin/login/')
 @user_passes_test(admin_required, login_url='/admin/login/')
 def contact_submission_delete(request, pk):
     submission = get_object_or_404(ContactSubmission, pk=pk)
@@ -960,7 +960,7 @@ def contact_submission_delete(request, pk):
     return render(request, 'contact_submission_confirm_delete.html', {'submission': submission})
 
 # Mailjet Settings
-@login_required
+@login_required(login_url='/admin/login/')
 @user_passes_test(admin_required, login_url='/admin/login/')
 def mailjet_settings(request):
     settings = MailjetSettings.load()
@@ -975,7 +975,7 @@ def mailjet_settings(request):
     return render(request, 'mailjet_settings.html', {'form': form, 'settings': settings})
 
 # Website Settings
-@login_required
+@login_required(login_url='/admin/login/')
 @user_passes_test(admin_required, login_url='/admin/login/')
 def website_settings(request):
     website, created = Website.objects.get_or_create(pk=1)
