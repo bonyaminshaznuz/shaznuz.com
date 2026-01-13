@@ -11,15 +11,28 @@ function HomePage() {
     // Fetch data from backend with cache busting
     const fetchData = async () => {
       try {
+        console.log('🔵 Fetching data from:', `${API_BASE_URL}/api/homepage/`);
+        
         // Add timestamp to prevent caching
         const timestamp = new Date().getTime();
         const response = await axios.get(`${API_BASE_URL}/api/homepage/`, {
-          params: { _t: timestamp }
+          params: { _t: timestamp },
+          timeout: 10000, // 10 second timeout
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+          }
         });
         
-        // Debug: Log the response data
-        console.log('API Response:', response.data);
-        console.log('Hero Data:', response.data?.hero);
+        console.log('✅ API Response Status:', response.status);
+        console.log('✅ API Response Data:', response.data);
+        console.log('✅ Hero Data:', response.data?.hero);
+        console.log('✅ Hero Title:', response.data?.hero?.title);
+        console.log('✅ Hero Full Name:', response.data?.hero?.full_name);
+        
+        if (!response.data) {
+          throw new Error('Empty response from server');
+        }
         
         setData(response.data);
         setLoading(false);
@@ -45,9 +58,29 @@ function HomePage() {
           }
         }
       } catch (err) {
-        console.error('Error fetching data:', err);
-        console.error('Error details:', err.response?.data || err.message);
-        setError(err.response?.data?.error || err.response?.data?.detail || err.message || 'Failed to load data. Please check if the backend server is running.');
+        console.error('❌ Error fetching data:', err);
+        console.error('❌ Error message:', err.message);
+        console.error('❌ Error response:', err.response);
+        console.error('❌ Error status:', err.response?.status);
+        console.error('❌ Error data:', err.response?.data);
+        console.error('❌ API Base URL:', API_BASE_URL);
+        
+        let errorMessage = 'Failed to load data. ';
+        
+        if (err.code === 'ECONNREFUSED' || err.message.includes('Network Error')) {
+          errorMessage += `Cannot connect to backend server at ${API_BASE_URL}. Please check if the backend server is running.`;
+        } else if (err.response) {
+          errorMessage += `Server returned error: ${err.response.status} - ${err.response.statusText}`;
+          if (err.response.data?.error) {
+            errorMessage += ` - ${err.response.data.error}`;
+          }
+        } else if (err.request) {
+          errorMessage += 'No response from server. Please check your network connection.';
+        } else {
+          errorMessage += err.message || 'Unknown error occurred.';
+        }
+        
+        setError(errorMessage);
         setLoading(false);
       }
     };
@@ -84,6 +117,21 @@ function HomePage() {
 
     return () => anchors.forEach(anchor => anchor.removeEventListener("click", handleClick));
   }, []);
+
+  // Debug: Log hero data when it changes (must be before any conditional returns)
+  useEffect(() => {
+    if (data) {
+      console.log('=== FULL API RESPONSE ===');
+      console.log('Full data:', data);
+      console.log('Hero data:', data.hero);
+      console.log('Hero title:', data.hero?.title);
+      console.log('Hero full_name:', data.hero?.full_name);
+      console.log('Hero availability:', data.hero?.availability);
+      console.log('Educations:', data.educations);
+      console.log('Projects:', data.projects);
+      console.log('========================');
+    }
+  }, [data]);
 
   if (loading) {
     return (
@@ -145,53 +193,45 @@ function HomePage() {
     );
   }
 
-  // Destructure data with safe defaults
-  const hero = data?.hero || {};
-  const website = data?.website || {};
+  // Destructure data with safe defaults - same pattern as other sections
+  const hero = data?.hero;
+  const website = data?.website;
   const educations = data?.educations || [];
   const skill_categories = data?.skill_categories || [];
   const projects = data?.projects || [];
 
-  // Helper function to get value or fallback (handles empty strings, null, undefined)
-  const getValue = (value, fallback) => {
-    if (value === null || value === undefined) {
-      return fallback;
-    }
-    if (typeof value === 'string') {
-      return value.trim() !== '' ? value : fallback;
-    }
-    return value || fallback;
-  };
-
-  // Debug: Log hero data when it changes
-  useEffect(() => {
-    console.log('Hero data:', hero);
-    console.log('Website data:', website);
-    console.log('Full data object:', data);
-  }, [data, hero, website]);
+  // Debug: Log hero specifically
+  console.log('🎨 Rendering - Full data object:', data);
+  console.log('🎨 Rendering - Hero object:', hero);
+  console.log('🎨 Rendering - Hero type:', typeof hero);
+  console.log('🎨 Rendering - Hero title:', hero?.title);
+  console.log('🎨 Rendering - Hero full_name:', hero?.full_name);
+  console.log('🎨 Rendering - Hero availability:', hero?.availability);
+  console.log('🎨 Rendering - Educations:', educations);
+  console.log('🎨 Rendering - Projects:', projects);
 
   return (
     <main>
-      <div id="home" key={hero?.full_name || 'hero-section'}>
+      <div id="home">
         <div className="hero-top">
           <div className="hero-top-left">
             <div className="dev-hero"></div>
-            <h3>{getValue(hero?.title, 'Web Developer')}</h3>
+            <h3>{hero?.title || 'Web Developer'}</h3>
           </div>
           <div className="hero-top-right">
             <div className="active-hero"></div>
-            <p>{getValue(hero?.availability, 'Available Now')}</p>
+            <p>{hero?.availability || 'Available Now'}</p>
           </div>
         </div>
         <div className="hero-main">
           <div className="hero-main-left">
-            <h1> I'm {getValue(hero?.full_name, 'Kazi Bony Amin (Shaznuz)')}</h1>
+            <h1> I'm {hero?.full_name || 'Kazi Bony Amin (Shaznuz)'}</h1>
             <p>
-              {getValue(hero?.short_intro, 'Web Developer from Dhaka, Bangladesh.')} 
-              {hero?.company_name && hero.company_name.trim() !== '' && (
+              {hero?.short_intro || 'Web Developer from Dhaka, Bangladesh.'} 
+              {hero?.company_name && (
                 <span className="highlight"> {hero.company_name}</span>
               )}
-              {hero?.short_intro && hero.short_intro.trim() !== '' && !hero.short_intro.includes('.') && '.'}
+              {hero?.short_intro && !hero.short_intro.includes('.') && '.'}
             </p>
             <div className="button-hero">
               <a href={hero?.hireme_link || "#"} className="btn">Hire Me</a>
@@ -213,7 +253,7 @@ function HomePage() {
           </div>
         </div>
         <div className="hero-bottom">
-          <p>{getValue(hero?.long_biography, 'No biography available.')}</p>
+          <p>{hero?.long_biography || 'No biography available.'}</p>
         </div>
       </div>
 

@@ -2,9 +2,8 @@ from django.db import models
 from django.core.validators import FileExtensionValidator
 
 class Website(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, blank=True, default='Portfolio')
     favicon = models.FileField(upload_to='static/icon/', null=True, blank=True,help_text='Upload an SVG file')
-    profile_picture = models.ImageField(upload_to='static/image/', null=True, blank=True)
 
     def __str__(self):
         return self.name
@@ -24,6 +23,7 @@ class HeroInfo(models.Model):
     full_name = models.CharField(max_length=200) 
     short_intro = models.TextField(max_length=500)  
     company_name = models.CharField(max_length=200) 
+    profile_picture = models.ImageField(upload_to='static/image/', null=True, blank=True, help_text='Profile picture for hero section')
     hireme_link = models.URLField(max_length=500,null=True, blank=True)  
     download_cv_button = models.URLField(max_length=500,null=True, blank=True)  
     long_biography = models.TextField() 

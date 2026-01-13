@@ -30,29 +30,51 @@ def api_homepage(request):
         footer = Footer.objects.first()
         social_icons = SocialIcon.objects.all()
         
+        # Debug: Log hero object
+        print(f"Hero object from DB: {hero}")
+        if hero:
+            print(f"Hero title: {hero.title}")
+            print(f"Hero full_name: {hero.full_name}")
+            print(f"Hero availability: {hero.availability}")
+        
         # Serialize hero data - always return a dict, even if hero doesn't exist
         if hero:
+            # Get availability display value
+            availability_display = hero.get_availability_display()
+            
+            # Helper function to get value or None (so frontend can use || fallback)
+            def get_field_value(field_value):
+                if field_value and str(field_value).strip():
+                    return str(field_value).strip()
+                return None  # Return None instead of empty string so frontend || works
+            
             hero_data = {
-                'title': hero.title or '',
-                'availability': hero.get_availability_display() or 'Available Now',
-                'full_name': hero.full_name or '',
-                'short_intro': hero.short_intro or '',
-                'company_name': hero.company_name or '',
-                'hireme_link': hero.hireme_link or '',
-                'download_cv_button': hero.download_cv_button or '',
-                'long_biography': hero.long_biography or '',
+                'title': get_field_value(hero.title),
+                'availability': availability_display if availability_display else 'Available Now',
+                'full_name': get_field_value(hero.full_name),
+                'short_intro': get_field_value(hero.short_intro),
+                'company_name': get_field_value(hero.company_name),
+                'hireme_link': str(hero.hireme_link) if hero.hireme_link else None,
+                'download_cv_button': str(hero.download_cv_button) if hero.download_cv_button else None,
+                'long_biography': get_field_value(hero.long_biography),
             }
+            
+            # Debug: Log serialized hero data
+            print(f"Serialized hero_data: {hero_data}")
+            print(f"Hero title from DB: '{hero.title}' -> Serialized: {hero_data['title']}")
+            print(f"Hero full_name from DB: '{hero.full_name}' -> Serialized: {hero_data['full_name']}")
         else:
             # Return empty structure if no hero data exists
+            print("No hero data found in database!")
             hero_data = {
-                'title': '',
+                'title': None,
                 'availability': 'Available Now',
-                'full_name': '',
-                'short_intro': '',
-                'company_name': '',
-                'hireme_link': '',
-                'download_cv_button': '',
-                'long_biography': '',
+                'full_name': None,
+                'short_intro': None,
+                'company_name': None,
+                'hireme_link': None,
+                'download_cv_button': None,
+                'long_biography': None,
             }
         
         # Serialize website data - always return a dict, even if website doesn't exist
@@ -62,23 +84,27 @@ def api_homepage(request):
             except (ValueError, AttributeError):
                 favicon_url = None
             
-            try:
-                profile_picture_url = website.profile_picture.url if website.profile_picture else None
-            except (ValueError, AttributeError):
-                profile_picture_url = None
-            
             website_data = {
                 'name': website.name or '',
                 'favicon': favicon_url,
-                'profile_picture': profile_picture_url,
             }
         else:
             # Return empty structure if no website data exists
             website_data = {
                 'name': '',
                 'favicon': None,
-                'profile_picture': None,
             }
+        
+        # Get profile picture from hero instead of website
+        profile_picture_url = None
+        if hero and hero.profile_picture:
+            try:
+                profile_picture_url = hero.profile_picture.url
+            except (ValueError, AttributeError):
+                profile_picture_url = None
+        
+        # Add profile picture to website_data for frontend compatibility
+        website_data['profile_picture'] = profile_picture_url
         
         # Serialize educations
         educations_data = []
@@ -150,7 +176,7 @@ def api_homepage(request):
                 'icon_link': icon.icon_link,
             })
         
-        response = JsonResponse({
+        response_data = {
             'hero': hero_data,
             'website': website_data,
             'educations': educations_data,
@@ -158,7 +184,14 @@ def api_homepage(request):
             'projects': projects_data,
             'footer': footer_data,
             'social_icons': social_icons_data,
-        })
+        }
+        
+        # Debug: Print the response data before sending
+        print(f"API Response - Hero data: {response_data['hero']}")
+        print(f"API Response - Hero title: {response_data['hero'].get('title', 'NOT FOUND')}")
+        print(f"API Response - Hero full_name: {response_data['hero'].get('full_name', 'NOT FOUND')}")
+        
+        response = JsonResponse(response_data)
         return response
     except Exception as e:
         import traceback
@@ -644,13 +677,54 @@ def hero_list(request):
 def hero_create(request):
     website, _ = Website.objects.get_or_create(pk=1)
     if request.method == 'POST':
-        form = HeroInfoForm(request.POST)
+        form = HeroInfoForm(request.POST, request.FILES)
+        # Website form is optional - only validate if data is provided
         website_form = WebsiteForm(request.POST, request.FILES, instance=website)
-        if form.is_valid() and website_form.is_valid():
-            form.save()
-            website_form.save()
-            messages.success(request, 'Hero info created successfully!')
-            return redirect('hero_list')
+        
+        # Debug: Log form data
+        print(f"Hero Create - POST data: {request.POST}")
+        print(f"Hero Create - Form valid: {form.is_valid()}")
+        print(f"Hero Create - Website form valid: {website_form.is_valid()}")
+        
+        if not form.is_valid():
+            print(f"Hero Create - Form errors: {form.errors}")
+            for field, errors in form.errors.items():
+                print(f"  {field}: {errors}")
+        
+        if not website_form.is_valid():
+            print(f"Hero Create - Website form errors: {website_form.errors}")
+        
+        # Hero form must be valid, website form is optional
+        if form.is_valid():
+            try:
+                hero_instance = form.save()
+                # Only save website form if it's valid and has data
+                if website_form.is_valid():
+                    website_form.save()
+                elif not website_form.has_changed():
+                    # If website form hasn't changed, that's fine - use defaults
+                    pass
+                print(f"Hero Create - Success! Hero ID: {hero_instance.id}, Full Name: {hero_instance.full_name}")
+                messages.success(request, 'Hero info created successfully!')
+                return redirect('hero_list')
+            except Exception as e:
+                print(f"Hero Create - Save error: {str(e)}")
+                import traceback
+                print(traceback.format_exc())
+                messages.error(request, f'Error saving hero info: {str(e)}')
+        else:
+            # Show form errors to user
+            error_messages = []
+            if not form.is_valid():
+                for field, errors in form.errors.items():
+                    for error in errors:
+                        error_messages.append(f"{field}: {error}")
+            if not website_form.is_valid() and website_form.has_changed():
+                for field, errors in website_form.errors.items():
+                    for error in errors:
+                        error_messages.append(f"Website {field}: {error}")
+            if error_messages:
+                messages.error(request, 'Please correct the errors: ' + ' | '.join(error_messages))
     else:
         form = HeroInfoForm()
         website_form = WebsiteForm(instance=website)
@@ -662,13 +736,55 @@ def hero_update(request, pk):
     hero = get_object_or_404(HeroInfo, pk=pk)
     website, _ = Website.objects.get_or_create(pk=1)
     if request.method == 'POST':
-        form = HeroInfoForm(request.POST, instance=hero)
+        form = HeroInfoForm(request.POST, request.FILES, instance=hero)
+        # Website form is optional - only validate if data is provided
         website_form = WebsiteForm(request.POST, request.FILES, instance=website)
-        if form.is_valid() and website_form.is_valid():
-            form.save()
-            website_form.save()
-            messages.success(request, 'Hero info updated successfully!')
-            return redirect('hero_list')
+        
+        # Debug: Log form data
+        print(f"Hero Update - POST data: {request.POST}")
+        print(f"Hero Update - Form valid: {form.is_valid()}")
+        print(f"Hero Update - Website form valid: {website_form.is_valid()}")
+        print(f"Hero Update - Hero instance: {hero}")
+        
+        if not form.is_valid():
+            print(f"Hero Update - Form errors: {form.errors}")
+            for field, errors in form.errors.items():
+                print(f"  {field}: {errors}")
+        
+        if not website_form.is_valid():
+            print(f"Hero Update - Website form errors: {website_form.errors}")
+        
+        # Hero form must be valid, website form is optional
+        if form.is_valid():
+            try:
+                hero_instance = form.save()
+                # Only save website form if it's valid and has data
+                if website_form.is_valid():
+                    website_form.save()
+                elif not website_form.has_changed():
+                    # If website form hasn't changed, that's fine - use defaults
+                    pass
+                print(f"Hero Update - Success! Hero ID: {hero_instance.id}, Full Name: {hero_instance.full_name}")
+                messages.success(request, 'Hero info updated successfully!')
+                return redirect('hero_list')
+            except Exception as e:
+                print(f"Hero Update - Save error: {str(e)}")
+                import traceback
+                print(traceback.format_exc())
+                messages.error(request, f'Error updating hero info: {str(e)}')
+        else:
+            # Show form errors to user
+            error_messages = []
+            if not form.is_valid():
+                for field, errors in form.errors.items():
+                    for error in errors:
+                        error_messages.append(f"{field}: {error}")
+            if not website_form.is_valid() and website_form.has_changed():
+                for field, errors in website_form.errors.items():
+                    for error in errors:
+                        error_messages.append(f"Website {field}: {error}")
+            if error_messages:
+                messages.error(request, 'Please correct the errors: ' + ' | '.join(error_messages))
     else:
         form = HeroInfoForm(instance=hero)
         website_form = WebsiteForm(instance=website)
