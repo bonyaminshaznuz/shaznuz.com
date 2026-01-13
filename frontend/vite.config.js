@@ -8,4 +8,5 @@ export default defineConfig({
     react(),
     tailwindcss(),
   ],
+  base: './', // Use relative paths for assets to avoid CORS issues
 })
