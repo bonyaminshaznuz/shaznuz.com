@@ -139,10 +139,21 @@ Value: <your-render-service-url>.onrender.com
 
 5. **Set Custom Domain**:
    - Go to Settings → Domains
-   - Add: `shaznuz.com` and `www.shaznuz.com`
-   - Follow DNS instructions
+   - Add: `shaznuz.com` (primary domain)
+   - Add: `www.shaznuz.com` (www subdomain)
+   - **Important**: Both domains must be added in Vercel
 
 ### Step 3: DNS Configuration for Frontend
+
+**Option 1: Use Vercel Nameservers (Recommended - Easiest)**
+
+1. In Vercel Dashboard → Domains → Your domain
+2. Copy Vercel's nameservers (usually `ns1.vercel-dns.com`, `ns2.vercel-dns.com`)
+3. Go to your domain provider
+4. Replace your current nameservers with Vercel's nameservers
+5. Wait 24-48 hours for DNS propagation
+
+**Option 2: Manual DNS Records**
 
 Add these DNS records in your domain provider:
 
@@ -150,15 +161,25 @@ Add these DNS records in your domain provider:
 Type: A
 Name: @
 Value: 76.76.21.21
+TTL: 3600
 
 Type: CNAME
 Name: www
 Value: cname.vercel-dns.com
+TTL: 3600
 ```
 
-Or use Vercel's nameservers (recommended):
-- Go to Vercel → Domain Settings
-- Use Vercel's nameservers in your domain provider
+**Important Notes:**
+- Both `shaznuz.com` and `www.shaznuz.com` must be added in Vercel Dashboard
+- DNS propagation can take 24-48 hours
+- SSL certificates will be automatically issued by Vercel
+- Check DNS propagation: https://dnschecker.org
+
+**If you see DNS_PROBE_FINISHED_NXDOMAIN error:**
+- Verify both domains are added in Vercel
+- Check DNS records are correctly configured
+- Wait for DNS propagation (can take up to 48 hours)
+- See `DNS_SETUP_GUIDE.md` for detailed troubleshooting
 
 ---
 

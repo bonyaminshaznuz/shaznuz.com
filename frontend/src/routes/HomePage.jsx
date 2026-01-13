@@ -8,10 +8,17 @@ function HomePage() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Fetch data from backend
+    // Fetch data from backend with cache busting
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${API_BASE_URL}/api/homepage/`);
+        // Add timestamp to prevent caching
+        const timestamp = new Date().getTime();
+        const response = await axios.get(`${API_BASE_URL}/api/homepage/`, {
+          params: { _t: timestamp },
+          headers: {
+            'Cache-Control': 'no-cache'
+          }
+        });
         setData(response.data);
         setLoading(false);
         
@@ -30,7 +37,7 @@ function HomePage() {
               faviconLink.rel = 'icon';
               document.head.appendChild(faviconLink);
             }
-            faviconLink.href = `${API_BASE_URL}${response.data.website.favicon}`;
+            faviconLink.href = `${API_BASE_URL}${response.data.website.favicon}?t=${timestamp}`;
             faviconLink.type = 'image/svg+xml';
           }
         }
@@ -42,6 +49,11 @@ function HomePage() {
     };
 
     fetchData();
+    
+    // Refresh data every 30 seconds to get updates
+    const interval = setInterval(fetchData, 30000);
+    
+    return () => clearInterval(interval);
   }, []);
 
   useEffect(() => {
@@ -125,7 +137,13 @@ function HomePage() {
           </div>
           <div className="hero-main-right">
             {website?.profile_picture ? (
-              <img src={`${API_BASE_URL}${website.profile_picture}`} alt="Profile Picture" />
+              <img 
+                src={`${API_BASE_URL}${website.profile_picture}?t=${new Date().getTime()}`} 
+                alt="Profile Picture"
+                onError={(e) => {
+                  e.target.src = './image/pp.jpg';
+                }}
+              />
             ) : (
               <img src="./image/pp.jpg" alt="Profile Picture" />
             )}
