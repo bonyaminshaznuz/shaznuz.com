@@ -69,6 +69,9 @@ CORS_ALLOW_HEADERS = [
     'x-requested-with',
 ]
 
+# Allow media files to be accessed from frontend
+CORS_URLS_REGEX = r'^/(api|media|static)/.*$'
+
 # Application definition
 
 INSTALLED_APPS = [
