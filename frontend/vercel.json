@@ -18,8 +18,7 @@
         }
       ],
       "destination": "https://shaznuz.com/:path*",
-      "permanent": true,
-      "statusCode": 301
+      "permanent": true
     }
   ],
   "headers": [
