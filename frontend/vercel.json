@@ -1,5 +1,19 @@
 {
   "rewrites": [
     { "source": "/(.*)", "destination": "/" }
+  ],
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "www.shaznuz.com"
+        }
+      ],
+      "destination": "https://shaznuz.com/:path*",
+      "permanent": true,
+      "statusCode": 301
+    }
   ]
 }
