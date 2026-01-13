@@ -47,10 +47,20 @@ def api_homepage(request):
         # Serialize website data
         website_data = None
         if website:
+            try:
+                favicon_url = website.favicon.url if website.favicon else None
+            except (ValueError, AttributeError):
+                favicon_url = None
+            
+            try:
+                profile_picture_url = website.profile_picture.url if website.profile_picture else None
+            except (ValueError, AttributeError):
+                profile_picture_url = None
+            
             website_data = {
                 'name': website.name,
-                'favicon': website.favicon.url if website.favicon else None,
-                'profile_picture': website.profile_picture.url if website.profile_picture else None,
+                'favicon': favicon_url,
+                'profile_picture': profile_picture_url,
             }
         
         # Serialize educations
@@ -70,9 +80,13 @@ def api_homepage(request):
             skills = category.skills.all()
             skills_data = []
             for skill in skills:
+                try:
+                    icon_url = skill.icon.url if skill.icon else None
+                except (ValueError, AttributeError):
+                    icon_url = None
                 skills_data.append({
                     'name': skill.name,
-                    'icon': skill.icon.url if skill.icon else None,
+                    'icon': icon_url,
                 })
             skill_categories_data.append({
                 'name': category.name,
@@ -82,11 +96,16 @@ def api_homepage(request):
         # Serialize projects
         projects_data = []
         for project in projects:
+            try:
+                logo_url = project.logo.url if project.logo else None
+            except (ValueError, AttributeError):
+                logo_url = None
+            
             projects_data.append({
                 'name': project.name,
                 'difficulty_level': project.get_difficulty_level_display(),
                 'project_type': project.project_type,
-                'logo': project.logo.url if project.logo else None,
+                'logo': logo_url,
                 'status': project.get_status_display(),
                 'project_link': project.project_link or '',
                 'start_date': project.start_date.strftime('%Y-%m-%d') if project.start_date else None,
@@ -105,8 +124,12 @@ def api_homepage(request):
         # Serialize social icons
         social_icons_data = []
         for icon in social_icons:
+            try:
+                icon_url = icon.icon.url if icon.icon else None
+            except (ValueError, AttributeError):
+                icon_url = None
             social_icons_data.append({
-                'icon': icon.icon.url if icon.icon else None,
+                'icon': icon_url,
                 'icon_link': icon.icon_link,
             })
         
@@ -121,7 +144,14 @@ def api_homepage(request):
         })
         return response
     except Exception as e:
-        return JsonResponse({'error': str(e)}, status=500)
+        import traceback
+        error_trace = traceback.format_exc()
+        print(f"API Error in api_homepage: {str(e)}")
+        print(f"Traceback: {error_trace}")
+        return JsonResponse({
+            'error': str(e),
+            'message': 'Failed to load homepage data. Please check backend logs for details.'
+        }, status=500)
 
 # Old template-based contact view removed - frontend handles contact form
 

@@ -14,10 +14,7 @@ function HomePage() {
         // Add timestamp to prevent caching
         const timestamp = new Date().getTime();
         const response = await axios.get(`${API_BASE_URL}/api/homepage/`, {
-          params: { _t: timestamp },
-          headers: {
-            'Cache-Control': 'no-cache'
-          }
+          params: { _t: timestamp }
         });
         setData(response.data);
         setLoading(false);
@@ -43,7 +40,8 @@ function HomePage() {
         }
       } catch (err) {
         console.error('Error fetching data:', err);
-        setError(err.message);
+        console.error('Error details:', err.response?.data || err.message);
+        setError(err.response?.data?.error || err.response?.data?.detail || err.message || 'Failed to load data. Please check if the backend server is running.');
         setLoading(false);
       }
     };
@@ -92,8 +90,42 @@ function HomePage() {
   if (error) {
     return (
       <main>
-        <div style={{ padding: '50px', textAlign: 'center', color: 'red' }}>
-          Error loading data: {error}
+        <div style={{ 
+          padding: '50px', 
+          textAlign: 'center', 
+          maxWidth: '600px',
+          margin: '50px auto',
+          backgroundColor: '#fee',
+          border: '2px solid #fcc',
+          borderRadius: '10px',
+          color: '#c33'
+        }}>
+          <h2 style={{ marginBottom: '20px', fontSize: '24px' }}>⚠️ Error Loading Data</h2>
+          <p style={{ marginBottom: '15px', fontSize: '16px' }}>{error}</p>
+          <div style={{ marginTop: '20px', fontSize: '14px', color: '#666' }}>
+            <p><strong>Possible solutions:</strong></p>
+            <ul style={{ textAlign: 'left', display: 'inline-block', marginTop: '10px' }}>
+              <li>Check if backend server is running at: {API_BASE_URL}</li>
+              <li>Verify API endpoint: {API_BASE_URL}/api/homepage/</li>
+              <li>Check browser console (F12) for more details</li>
+              <li>Verify CORS settings in backend</li>
+            </ul>
+          </div>
+          <button 
+            onClick={() => window.location.reload()} 
+            style={{
+              marginTop: '20px',
+              padding: '10px 20px',
+              backgroundColor: '#3b82f6',
+              color: 'white',
+              border: 'none',
+              borderRadius: '5px',
+              cursor: 'pointer',
+              fontSize: '16px'
+            }}
+          >
+            🔄 Retry
+          </button>
         </div>
       </main>
     );
