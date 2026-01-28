@@ -2,6 +2,8 @@
 
 A modern, full-stack portfolio website built with Django (Backend) and React (Frontend).
 
+Live Link: https://www.shaznuz.com/
+
 ## 📁 Project Structure
 
 ```
@@ -192,7 +194,7 @@ This project is private and proprietary.
 
 ## 👤 Author
 
-**Bonyamin Shaznuz**
+**Kazi Bony Amin**
 - Portfolio: [shaznuz.com](https://shaznuz.com)
 - Email: mdshaznuz@gmail.com
 
